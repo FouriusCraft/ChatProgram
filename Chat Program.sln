@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatServerWpf", "ChatServerWpf\ChatServerWpf.csproj", "{B338A4CB-17AA-4F40-86BF-5461698AB176}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatClientWpf", "ChatClientWpf\ChatClientWpf.csproj", "{CAD948D3-B40D-4F13-A202-B6FDC9C8C986}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B338A4CB-17AA-4F40-86BF-5461698AB176}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B338A4CB-17AA-4F40-86BF-5461698AB176}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B338A4CB-17AA-4F40-86BF-5461698AB176}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B338A4CB-17AA-4F40-86BF-5461698AB176}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CAD948D3-B40D-4F13-A202-B6FDC9C8C986}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAD948D3-B40D-4F13-A202-B6FDC9C8C986}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAD948D3-B40D-4F13-A202-B6FDC9C8C986}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAD948D3-B40D-4F13-A202-B6FDC9C8C986}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

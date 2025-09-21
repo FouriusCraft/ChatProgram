@@ -1,0 +1,34 @@
+﻿<Window x:Class="ChatServerWpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="ChatServer (WPF)" Height="500" Width="800">
+    <DockPanel>
+        <!-- Control Panel -->
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="8">
+            <TextBlock Text="Port:" VerticalAlignment="Center"/>
+            <TextBox x:Name="TbPort" Text="5000" Width="80" Margin="8,0"/>
+            <Button x:Name="BtnStart" Content="Start Server" Width="120" Click="BtnStart_Click"/>
+            <Button x:Name="BtnStop" Content="Stop" Width="80" Margin="8,0" IsEnabled="False" Click="BtnStop_Click"/>
+        </StackPanel>
+
+        <Grid Margin="8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="8"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Connected Users -->
+            <GroupBox Header="Users" Grid.Column="0">
+                <ListBox x:Name="LbUsers"/>
+            </GroupBox>
+
+            <!-- Log -->
+            <GroupBox Header="Log" Grid.Column="2">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <TextBox x:Name="TbLog" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap"/>
+                </ScrollViewer>
+            </GroupBox>
+        </Grid>
+    </DockPanel>
+</Window>
