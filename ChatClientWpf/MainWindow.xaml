@@ -2,9 +2,67 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="ChatClient (WPF .NET 6)" Height="560" Width="920">
+
+  <!-- PASTIKAN CUMA ADA SATU Window.Resources DI FILE INI -->
+  <Window.Resources>
+    <ResourceDictionary>
+      <!-- 2 kamus tema DISIMPAN sebagai resource ber-key, BELUM di-merge -->
+      <ResourceDictionary x:Key="LightTheme">
+        <SolidColorBrush x:Key="BgBrush" Color="#FFFFFFFF"/>
+        <SolidColorBrush x:Key="FgBrush" Color="#FF000000"/>
+        <SolidColorBrush x:Key="CardBrush" Color="#FFF5F5F5"/>
+        <SolidColorBrush x:Key="BorderBrush" Color="#FFDDDDDD"/>
+      </ResourceDictionary>
+
+      <ResourceDictionary x:Key="DarkTheme">
+        <SolidColorBrush x:Key="BgBrush" Color="#FF1E1E1E"/>
+        <SolidColorBrush x:Key="FgBrush" Color="#FFF3F3F3"/>
+        <SolidColorBrush x:Key="CardBrush" Color="#FF2B2B2B"/>
+        <SolidColorBrush x:Key="BorderBrush" Color="#FF3A3A3A"/>
+      </ResourceDictionary>
+
+      <!-- Styles -->
+      <Style TargetType="Window">
+        <Setter Property="Background" Value="{DynamicResource BgBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource FgBrush}"/>
+      </Style>
+
+      <Style TargetType="GroupBox">
+        <Setter Property="Foreground" Value="{DynamicResource FgBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+        <Setter Property="Background" Value="{DynamicResource CardBrush}"/>
+        <Setter Property="Padding" Value="6"/>
+      </Style>
+
+      <Style TargetType="TextBox">
+        <Setter Property="Foreground" Value="{DynamicResource FgBrush}"/>
+        <Setter Property="Background" Value="{DynamicResource BgBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+      </Style>
+
+      <Style TargetType="ListView">
+        <Setter Property="Foreground" Value="{DynamicResource FgBrush}"/>
+        <Setter Property="Background" Value="{DynamicResource BgBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+      </Style>
+
+      <!-- Style dasar untuk semua turunan ButtonBase -->
+      <Style x:Key="BaseButtonStyle" TargetType="{x:Type ButtonBase}">
+        <Setter Property="Foreground" Value="{DynamicResource FgBrush}"/>
+        <Setter Property="Background" Value="{DynamicResource CardBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+        <Setter Property="Padding" Value="4,2"/>
+      </Style>
+
+      <!-- Turunannya -->
+      <Style TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}"/>
+      <Style TargetType="ToggleButton" BasedOn="{StaticResource BaseButtonStyle}"/>
+    </ResourceDictionary>
+  </Window.Resources>
+
   <DockPanel>
     <!-- Top bar -->
-    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="8" VerticalAlignment="Center" >
+    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="8" VerticalAlignment="Center">
       <TextBlock Text="IP:" Margin="0,0,6,0" VerticalAlignment="Center"/>
       <TextBox x:Name="TbIp" Text="127.0.0.1" Width="120" Margin="0,0,8,0"/>
       <TextBlock Text="Port:" Margin="0,0,6,0" VerticalAlignment="Center"/>
@@ -12,13 +70,15 @@
       <TextBlock Text="Username:" Margin="0,0,6,0" VerticalAlignment="Center"/>
       <TextBox x:Name="TbName" Text="User123" Width="140" Margin="0,0,8,0"/>
       <Button x:Name="BtnConnect" Content="Connect" Width="90" Margin="0,0,6,0" Click="BtnConnect_Click"/>
-      <Button x:Name="BtnDisconnect" Content="Disconnect" Width="100" IsEnabled="False" Click="BtnDisconnect_Click"/>
+      <Button x:Name="BtnDisconnect" Content="Disconnect" Width="100" IsEnabled="False" Click="BtnDisconnect_Click" Margin="0,0,6,0"/>
+      <ToggleButton x:Name="BtnTheme" Content="Dark" Width="80"
+                    Checked="BtnTheme_Checked" Unchecked="BtnTheme_Unchecked"/>
     </StackPanel>
 
     <!-- Body -->
     <Grid Margin="8">
       <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="180"/>
+        <ColumnDefinition Width="220"/>
         <ColumnDefinition Width="8"/>
         <ColumnDefinition Width="*"/>
       </Grid.ColumnDefinitions>
@@ -30,20 +90,24 @@
 
       <!-- User list -->
       <GroupBox Header="Users" Grid.Row="0" Grid.Column="0">
-        <ListBox x:Name="LbUsers"/>
+        <ListView x:Name="LvUsers" MouseDoubleClick="LvUsers_MouseDoubleClick">
+          <ListView.View>
+            <GridView>
+              <GridViewColumn Header="Name" Width="180" DisplayMemberBinding="{Binding}"/>
+            </GridView>
+          </ListView.View>
+        </ListView>
       </GroupBox>
 
-      <!-- Spacer -->
       <Grid Grid.Row="0" Grid.Column="1"/>
 
-      <!-- Chat area -->
+      <!-- Chat -->
       <GroupBox Header="Chat" Grid.Row="0" Grid.Column="2">
         <ScrollViewer VerticalScrollBarVisibility="Auto">
           <TextBox x:Name="TbChat" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap"/>
         </ScrollViewer>
       </GroupBox>
 
-      <!-- Spacer -->
       <Grid Grid.Row="1" Grid.ColumnSpan="3"/>
 
       <!-- Input -->
@@ -52,7 +116,8 @@
           <ColumnDefinition Width="*"/>
           <ColumnDefinition Width="100"/>
         </Grid.ColumnDefinitions>
-        <TextBox x:Name="TbInput" Grid.Column="0" Margin="0,0,8,0" KeyDown="TbInput_KeyDown"/>
+        <TextBox x:Name="TbInput" Grid.Column="0" Margin="0,0,8,0"
+                 KeyDown="TbInput_KeyDown" TextChanged="TbInput_TextChanged"/>
         <Button x:Name="BtnSend" Grid.Column="1" Content="Send" Click="BtnSend_Click" IsEnabled="False"/>
       </Grid>
     </Grid>
